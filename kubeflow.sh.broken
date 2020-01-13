@@ -1,0 +1,62 @@
+#!/bin/bash
+
+NAMESPACE=kubeflow
+
+oc new-project ${NAMESPACE}
+oc project ${NAMESPACE}
+
+# Set permissions for service accounts
+
+oc adm policy add-scc-to-user anyuid -z ambassador -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z argo -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z argo-ui -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z builder -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z centraldashboard -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z default -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z deployer -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z jupyter-notebook -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z jupyter-web-app -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z katib-ui -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z meta-controller-service -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z metrics-collector -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z ml-pipeline -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z ml-pipeline-scheduledworkflow -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z notebook-controller -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z pipeline-runner -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z pytorch-operator -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z studyjob-controller -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z tf-job-dashboard -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z tf-job-operator -n${NAMESPACE}
+oc adm policy add-scc-to-user anyuid -z vizier-core -n${NAMESPACE}
+
+
+
+###### Possible commands
+
+export KFAPP=kubeflow
+kfctl init ${KFAPP} --platform 'none'
+kfctl help init
+mkdir kubeflow
+kfctl init ${KFAPP} --platform 'openshift' -V
+rm -rf kubeflow/
+mkdir kubeflow
+kfctl init ${KFAPP} --verbose
+ls -l kubeflow/
+cd kubeflow/
+vim app.yaml 
+kfctl generate all -V
+oc get sa
+kfctl apply all -V
+which ks
+rpm -qf /usr/local/bin/ks 
+vim app.yaml 
+kfctl apply all -V
+grep -i pvc app.yaml 
+grep -i mysql-pv-claim app.yaml 
+find . -type f -exec grep -Hi mysql-pv-claim '{}' ';'
+vim ./ks_app/vendor/kubeflow/modeldb/modeldb.libsonnet
+vim ./ks_app/vendor/kubeflow/pipeline/storage.libsonnet 
+oc expose svc/centraldashboard
+oc expose svc/jupyter-web-app
+oc expose svc/katib-ui
+

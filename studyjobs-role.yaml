@@ -1,0 +1,24 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: studyjobs-role
+  labels:
+    app: studyjobs  
+rules:
+- apiGroups: ["kubeflow.org"]
+  resources: ["studyjobs", "studyjobs/finalizers"]
+  verbs: ["get", "list", "watch", "update", "patch"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: studyjobs-rolebinding
+  labels:
+    app: studyjobs 
+roleRef:
+  kind: Role
+  name: studyjobs-role
+subjects:
+  - kind: ServiceAccount
+    name: studyjob-controller
+
